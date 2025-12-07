@@ -34,7 +34,7 @@ class MongoDBClient:
 
     def find_document_by_id(self, doc_id: str) -> Optional[Dict[str, Any]]:
         try:
-            result = self.collection.find_one({'_id': ObjectId(doc_id)})
+            result = self.collection.find_one({'_id': doc_id})
 
             if result:
                 result['id'] = str(result['_id'])
@@ -51,7 +51,7 @@ class MongoDBClient:
                         new_content: str) -> bool:
         try:
             result = self.collection.update_one(
-                {'_id': ObjectId(doc_id)},
+                {'_id': doc_id},
                 {'$set': {filed: new_content}}
             )
 
@@ -67,7 +67,7 @@ class MongoDBClient:
 
     def delete_document_by_id(self, doc_id: str) -> bool:
         try:
-            result = self.collection.delete_one({'_id': ObjectId(doc_id)})
+            result = self.collection.delete_one({'_id': doc_id})
 
             if result.deleted_count > 0:
                 print('Deleted row')
@@ -211,3 +211,4 @@ if __name__ == '__main__':
     review_mongo.user_reviews_report()
     review_mongo.get_product_report(9)
     pprint(review_mongo.get_user_reviews(3, 5))
+    pprint(review_mongo.client.find_document_by_id('43380409-03a9-49b4-b151-8a9d60e9041d'))
